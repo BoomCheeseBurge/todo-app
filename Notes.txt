@@ -1,0 +1,7 @@
+Font Awesome for React installed with NPM.
+
+To check if there is any existing todos in the browser's local storage, either run the command 'localstorage' on the browser console OR
+
+    - Open up the developer tools menu in the browser
+    - Go to the 'Application' (Chrome) or 'Storage' (Firefox) section
+    - Click on 'Local Storage' to see the saved todos
