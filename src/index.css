@@ -126,6 +126,10 @@ hr {
   max-width: unset !important;
 }
 
+.todo-edit {
+  background: var(--background-primary);
+}
+
 @keyframes widen {
   from {
     width: 20%;

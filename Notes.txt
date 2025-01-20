@@ -1,7 +1,19 @@
 Font Awesome for React installed with NPM.
 
+________________________________________________________________________
+
 To check if there is any existing todos in the browser's local storage, either run the command 'localstorage' on the browser console OR
 
     - Open up the developer tools menu in the browser
     - Go to the 'Application' (Chrome) or 'Storage' (Firefox) section
     - Click on 'Local Storage' to see the saved todos
+
+________________________________________________________________________
+
+Finding the todo index from the unfiltered or original todos like the one shown in the 'TodoList.jsx' file has it's limitations. 
+
+In later courses we learn a more sophisticated way of doing it (the limitation is that the code might misbehave if you have two todos with the exact same text :) See if you can figure out why!
+
+My answer: cause key conflicts.
+
+My solution: prevent the same todo input to be added twice when about to add a new todo and console log a message about it (though, this is not the best solution).

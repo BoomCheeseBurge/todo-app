@@ -8,98 +8,123 @@ import { useState, useEffect } from 'react';
 
 function App() {
 
-  // const todos = [
-  //   { input: 'Hello! Add your first todo!', complete: true },
-  //   { input: 'Get the groceries!', complete: false },
-  //   { input: 'Learn how to web design', complete: false },
-  //   { input: 'Say hi to gran gran', complete: true },
-  // ];
+	// const todos = [
+	//   { input: 'Hello! Add your first todo!', complete: true },
+	//   { input: 'Get the groceries!', complete: false },
+	//   { input: 'Learn how to web design', complete: false },
+	//   { input: 'Say hi to gran gran', complete: true },
+	// ];
 
-  // Store the todos
-  const [todos, setTodos] = useState([]);
-  // Store the selected tab of todolist
-  const [selectedTab, setSelectedTab] = useState('All');
+	// Store the todos
+	const [todos, setTodos] = useState([]);
+	// Store the selected tab of todolist
+	const [selectedTab, setSelectedTab] = useState('All');
 
-  // Add new todo to the todo list
-  function handleAddTodo(newTodo) {
+	//--------------------------------------------------------------------------------------------------
 
-    const newTodos = [...todos, {input: newTodo, complete: false}];
+	// Add new todo to the todo list
+	function handleAddTodo(newTodo) {
 
-    setTodos(newTodos);
+		for (const todo of todos) {
 
-    // Save the new todos to the browser's local storage
-    handleSaveData(newTodos);
-  }
-  
-  // Mark a todo as completed
-  function handleCompleteTodo(index) {
+			if (todo.input === newTodo) {
+			  console.log('There cannot be two of the same Todo task!');
+			  return; // Exit the entire function
+			}
+		}
 
-    const newTodos = todos.map((todo, todoIndex) => {
+		const newTodos = [...todos, {input: newTodo, complete: false}];
 
-      if(todoIndex === index) {
-        todo.complete = true;
-      }
+		setTodos(newTodos);
 
-      return todo;
-    });
+		// Save the new todos to the browser's local storage
+		handleSaveData(newTodos);
+	}
+	
+	// Mark a todo as completed
+	function handleCompleteTodo(index) {
 
-    setTodos(newTodos);
+		const newTodos = todos.map((todo, todoIndex) => {
 
-      // Save the new todos to the browser's local storage
-      handleSaveData(newTodos);
-  }
+			if(todoIndex === index) {
+				todo.complete = true;
+			}
 
-  // Delete the todo from the todos list
-  function handleDeleteTodo(index) {
+			return todo;
+		});
 
-    const newTodos = todos.filter((todo, todoIndex) => todoIndex !== index);
+		setTodos(newTodos);
 
-    setTodos(newTodos);
+			// Save the new todos to the browser's local storage
+			handleSaveData(newTodos);
+	}
 
-    // Save the new todos to the browser's local storage
-    handleSaveData(newTodos);
-  }
+	// Delete the todo from the todos list
+	function handleDeleteTodo(index) {
 
-  /**
-   * Save the current todos into the browser's local storage of JSON 'database' 
-   * @param {*} currentTodos 
-   */
-  function handleSaveData(currentTodos) {
-    
-    localStorage.setItem('todo-app', JSON.stringify({ todos: currentTodos }));
-  }
+		const newTodos = todos.filter((todo, todoIndex) => todoIndex !== index);
+
+		setTodos(newTodos);
+
+		// Save the new todos to the browser's local storage
+		handleSaveData(newTodos);
+	}
+	
+	// Edit the input of a todo
+	function handleEditTodo(index, newInput) {
+
+		const newTodos = todos.map((todo, todosIndex) => {
+
+			if(todosIndex === index)
+			{
+				todo.input = newInput;
+			}
+			
+			return todo;
+		});
+
+		setTodos(newTodos);
+	}
+
+	// Save the current todos into the browser's local storage of JSON 'database' 
+	function handleSaveData(currentTodos) {
+		
+		localStorage.setItem('todo-app', JSON.stringify({ todos: currentTodos }));
+	}
  
-  /**
-   * Load any existing todos from the browser's local storage on the App's mount
-   */
-  useEffect(() => {
-    
-    /**
-     * Check if the local storage is inaccessible, then don't continue
-     * OR 
-     * check if the todo list does not exist
-     */
-    if (!localStorage || !localStorage.getItem('todo-app')) return;
+	//--------------------------------------------------------------------------------------------------
 
-    // Retrieve the todos object from the browser's local storage
-    let db = JSON.parse(localStorage.getItem('todo-app'));
+	/**
+	 * Load any existing todos from the browser's local storage on the App's mount
+	 */
+	useEffect(() => {
+		
+		/**
+		 * Check if the local storage is inaccessible, then don't continue
+		 * OR 
+		 * check if the todo list does not exist
+		 */
+		if (!localStorage || !localStorage.getItem('todo-app')) return;
 
-    // Assignt the todos to the app's todos state variable
-    setTodos(db.todos);
-  }, []);
+		// Retrieve the todos object from the browser's local storage
+		let db = JSON.parse(localStorage.getItem('todo-app'));
+
+		// Assignt the todos to the app's todos state variable
+		setTodos(db.todos);
+	}, []);
 
 
-  return (
-    <>
-      <Header todos={todos} />
+	return (
+		<>
+			<Header todos={todos} />
 
-      <Tabs todos={todos} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+			<Tabs todos={todos} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-      <TodoList todos={todos} selectedTab={selectedTab} handleDeleteTodo={handleDeleteTodo} handleCompleteTodo={handleCompleteTodo} />
+			<TodoList todos={todos} selectedTab={selectedTab} handleDeleteTodo={handleDeleteTodo} handleCompleteTodo={handleCompleteTodo} handleEditTodo={handleEditTodo} />
 
-      <TodoInput handleAddTodo={handleAddTodo} />
-    </>
-  )
+			<TodoInput handleAddTodo={handleAddTodo} />
+		</>
+	)
 }
 
 export default App
